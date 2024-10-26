@@ -2,9 +2,9 @@ package com.assignment.crud.controller;
 
 import com.assignment.crud.domain.Blog;
 import com.assignment.crud.dto.BlogDto;
+import com.assignment.crud.exception.PostNotFoundException;
 import com.assignment.crud.service.BlogService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +63,7 @@ public class BlogController {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("Invalid ID provided");
         }
-        return blogService.getPostById(id).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
+        return blogService.getPostById(id).orElseThrow(() -> new PostNotFoundException(id));
     }
 
 }

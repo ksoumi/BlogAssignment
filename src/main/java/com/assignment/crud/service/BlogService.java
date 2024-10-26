@@ -1,7 +1,8 @@
 package com.assignment.crud.service;
 
-import com.assignment.crud.dto.BlogDto;
 import com.assignment.crud.domain.Blog;
+import com.assignment.crud.dto.BlogDto;
+import com.assignment.crud.exception.PostNotFoundException;
 import com.assignment.crud.repository.BlogRepository;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class BlogService {
     // Update an existing post
     public Blog updatePost(Long id, BlogDto blogDtoDetails) {
         Blog blog = blogRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Post not found with id " + id));
+                .orElseThrow(() -> new PostNotFoundException(id));
         Blog blogDetails = blogDtoDetails.toDomain();
         blog.setContent(blogDetails.getContent());
         blog.setTitle(blogDetails.getTitle());
@@ -45,7 +46,7 @@ public class BlogService {
     // Delete a post
     public void deletePost(Long id) {
         Blog blog = blogRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Post not found with id " + id));
+                .orElseThrow(() -> new PostNotFoundException(id));
         blogRepository.delete(blog);
     }
 }
