@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+       - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/crud?user=crud&password=crud
+      SPRING_DATASOURCE_USERNAME: crud
+      SPRING_DATASOURCE_PASSWORD: crud
+    depends_on:
+      - db
+  db:
+    image: postgres:15.2  # Use the desired version of PostgreSQL
+    environment:
+      POSTGRES_DB: crud
+      POSTGRES_USER: crud
+      POSTGRES_PASSWORD: crud
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./src/main/resources/scripts:/docker-entrypoint-initdb.d
